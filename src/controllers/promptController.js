@@ -4,7 +4,7 @@ const addPrompt = async (req, res) => {
   const OpenAI = require("openai");
   const token = process.env.AZURE_KEY;
   const endpoint = "https://models.inference.ai.azure.com";
-  const modelName = "gpt-4o";
+  const modelName = "gpt-4o-mini";
 
   const client = new OpenAI({ baseURL: endpoint, apiKey: token });
 
@@ -27,9 +27,8 @@ const addPrompt = async (req, res) => {
       .status(200)
       .json({ message: response.choices[0].message.content });
   } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "Can't generate response. Please try again later." });
+    console.log("error", error);
+    return res.status(error.status).json({ message: error.error.message });
   }
 };
 
